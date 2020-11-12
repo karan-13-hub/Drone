@@ -1,4 +1,4 @@
-# Drone
+# Drone Dynamics and Control
 - This repository contains all the required MATLAB functions and script to run a simulation of a Drone with Payload attached not necessarily at CoG.
 ## To execute
 - Dowload and unzip all the MATLAB codes(*.m files*) into the same folder.
