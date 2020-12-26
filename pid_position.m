@@ -2,9 +2,9 @@ function [xdesired,u] = pid_position(m,x,xdot,xint,traj_x,traj_y,t)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
  % Controller gains, tuned by hand and intuition.
- Kd = 12;
- Kp = 25;
- Ki = 5;
+ Kd = 3.429;
+ Kp = 7.143;
+ Ki = 1.429;
  
  T = [1, t, t^2, t^3, t^4, t^5, t^6, t^7, t^8, t^9];
  T_dot = [0, 1, 2*t, 3*t^2, 4*t^3, 5*t^4, 6*t^5, 7*t^6, 8*t^7, 9*t^8];
@@ -22,6 +22,6 @@ function [xdesired,u] = pid_position(m,x,xdot,xint,traj_x,traj_y,t)
  xdesireddoubledot = [x_double_dot;y_double_dot];
  
  % Compute required force
- u = m*xdesireddoubledot-Ki*xint-Kd*(xdot-xdesireddot)-Kp*(x-xdesired);
+ u = m*(xdesireddoubledot-Ki*xint-Kd*(xdot-xdesireddot)-Kp*(x-xdesired));
 end
 

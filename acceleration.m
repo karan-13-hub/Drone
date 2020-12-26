@@ -7,6 +7,6 @@ R = [
     ];
 T = thrust(inputs, k);
 Fd = -kd*xdot;
-a = gravity + 1/m*R*T(3) + Fd;
+a = gravity + 1/m*R*T(3) + 1/m*Fd;
 end
 

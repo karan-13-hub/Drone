@@ -50,6 +50,9 @@
  plt_x = zeros(1,N);
  plt_y = zeros(1,N);
  plt_z = zeros(1,N);
+ plt_x_d = zeros(1,N);
+ plt_y_d = zeros(1,N);
+ plt_z_d = zeros(1,N);
  T_req_1 = zeros(1,N);
  T_req_2 = zeros(1,N);
  T_req_3 = zeros(1,N);
@@ -57,8 +60,8 @@
 
  i = 1;
  xdesired = [-100;-50;30];
- xp = 0;
- yp = 0;
+ xp = 0.15;
+ yp = 0.10;
  traj_x = trajectory(start_time,end_time,x(1),xdesired(1));
  traj_y = trajectory(start_time,end_time,x(2),xdesired(2));
  traj_h = trajectory(start_time,end_time,x(3),xdesired(3));
@@ -82,9 +85,10 @@ for t = times
  p1 = e(1)*Ixx/2/k/L;   
  p2 = e(2)*Iyy/2/k/L;
  p3 = e(3)*Izz/4/b;
+ 
  %Get square of angular velocities of rotors
- input(3) = (total/4 - p2 - p3);
- input(1) = (total/4 + p2 - p3);
+ input(1) = (total/4 - p2 - p3);
+ input(3) = (total/4 + p2 - p3);
  input(2) = (total/4 - p1 + p3);
  input(4) = (total/4 + p1 + p3);
  
@@ -92,7 +96,7 @@ for t = times
  omega = thetadot2omega(theta,thetadot);
  % Compute linear and angular accelerations.
  a = acceleration(input, theta, xdot, m, g, k, kd);
- omegadot = angular_acceleration(input,omega, I, L, b, k,mp,xp,yp);
+ omegadot = angular_acceleration(input,omega, I, L, b, k,mp,xp,yp,g);
  
  %for plotting variables
  T_req_1(i) = k * input(1);
@@ -105,10 +109,13 @@ for t = times
  plt_x(i) = x(1);
  plt_y(i) = x(2);
  plt_z(i) = x(3);
+ plt_x_d(i) = xdes(1);
+ plt_y_d(i) = xdes(2);
+ plt_z_d(i) = h_d;
  
- %Update omega
- omega = omega + dt * omegadot;
- %Get thetadot from omega
+ %Update Omega
+ omega = omega + dt*omegadot;
+ %Update thetadot
  thetadot = omega2thetadot(theta,omega);
  %Update theta
  theta = theta + dt * thetadot;
@@ -137,16 +144,28 @@ ylabel("Yaw(in deg)");
 figure(2);
 subplot(3,1,1);
 plot(times,plt_x);
+hold on
+plot(times,plt_x_d);
+hold off
 xlabel("time ");
 ylabel("X");
+legend('X - actual','X - desired')
 subplot(3,1,2);
 plot(times,plt_y);
+hold on
+plot(times,plt_y_d);
+hold off
 xlabel("time ");
 ylabel("Y");
+legend('Y - actual','Y - desired')
 subplot(3,1,3);
 plot(times,plt_z);
+hold on
+plot(times,plt_z_d);
+hold off
 xlabel("time ");
 ylabel("Z");
+legend('Z - actual','Z - desired')
 
 figure(3);
 subplot(2,2,1);

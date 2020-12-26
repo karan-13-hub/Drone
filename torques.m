@@ -1,9 +1,9 @@
 % Compute torques, given current inputs, length, drag coefficient, and thrust coefficient.
-function tau = torques(inputs, L, b, k,mp,xp,yp)
+function tau = torques(inputs, L, b, k,mp,xp,yp,g)
  % Inputs are values for ?i
 tau = [
-L * k * (inputs(2) - inputs(4))+ mp*yp;
-L * k * (inputs(3) - inputs(1))- mp*xp;
+L * k * (inputs(2) - inputs(4))+ mp*yp*g;
+L * k * (inputs(1) - inputs(3))- mp*xp*g;
 b * (inputs(1) - inputs(2) + inputs(3) - inputs(4));
 ];
 end
